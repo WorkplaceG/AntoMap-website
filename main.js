@@ -30,65 +30,213 @@ function initMap() {
    
   ];
 
-  const fehMarker = 'http://127.0.0.1:5173/';
+ 
   const centerMap = { lat: 47.6587807, lng: -122.3344694 };
 
-  const mapOptions = {
-    center: centerMap,
-    zoom: 10,
-    disableDefaultUI: true,
-  }
-  const map = new google.maps.Map(
-    document.getElementById("google-map"),
-    mapOptions
-  );
+ 	const mapOptions = {
+		center: centerMap,
+		zoom: 12,
+		disableDefaultUI: true,
+		styles: [
+			{
+				"featureType": "administrative",
+				"elementType": "all",
+				"stylers": [
+					{
+						"visibility": "on"
+					}
+				]
+			},
+			{
+				"featureType": "administrative",
+				"elementType": "labels.text.fill",
+				"stylers": [
+					{
+						"color": "#444444"
+					}
+				]
+			},
+			{
+				"featureType": "landscape",
+				"elementType": "all",
+				"stylers": [
+					{
+						"color": "#f3f3f3"
+					}
+				]
+			},
+			{
+				"featureType": "landscape.natural",
+				"elementType": "all",
+				"stylers": [
+					{
+						"color": "#cccccc"
+					}
+				]
+			},
+			{
+				"featureType": "poi",
+				"elementType": "all",
+				"stylers": [
+					{
+						"visibility": "off"
+					}
+				]
+			},
+			{
+				"featureType": "road",
+				"elementType": "all",
+				"stylers": [
+					{
+						"saturation": "0"
+					},
+					{
+						"lightness": "0"
+					},
+					{
+						"visibility": "simplified"
+					}
+				]
+			},
+			{
+				"featureType": "road",
+				"elementType": "geometry.stroke",
+				"stylers": [
+					{
+						"weight": "0.49"
+					},
+					{
+						"visibility": "on"
+					},
+					{
+						"saturation": "0"
+					},
+					{
+						"color": "#9a9a9a"
+					},
+					{
+						"gamma": "1.55"
+					},
+					{
+						"lightness": "0"
+					}
+				]
+			},
+			{
+				"featureType": "road.highway",
+				"elementType": "geometry.fill",
+				"stylers": [
+					{
+						"color": "#c280a3"
+					}
+				]
+			},
+			{
+				"featureType": "road.arterial",
+				"elementType": "labels.icon",
+				"stylers": [
+					{
+						"visibility": "off"
+					}
+				]
+			},
+			{
+				"featureType": "transit",
+				"elementType": "all",
+				"stylers": [
+					{
+						"visibility": "off"
+					},
+					{
+						"color": "#a73636"
+					}
+				]
+			},
+			{
+				"featureType": "water",
+				"elementType": "all",
+				"stylers": [
+					{
+						"color": "#cfd0d0"
+					},
+					{
+						"visibility": "on"
+					}
+				]
+			}
+		]
 
-  const infoWindow = new google.maps.infoWindow({
-    minWidth: 200,
-    maxWidth: 200
+	}
 
-  });
+	/** 
+	* Add map to div, and include above map options
+	*/
+	const map = new google.maps.Map(document.getElementById("google-map"), mapOptions);
 
-  const bounds = new google.mapsLatLngBounds();
+	/** 
+	* Create InfoWindow object 
+	*/
+	const infoWindow = new google.maps.InfoWindow({
+		minWidth: 200,
+		maxWidth: 200
+	});
 
-  /**
-   * Loop through all markers
-   */
-  for(let i = 0; i < markers.length; i++) {
+	/** 
+	* Create bounds object
+	*/
+	const bounds = new google.maps.LatLngBounds();
 
-    const marker = new google.maps.Marker( {
-    position: { lat: markers [i] ['lat'], lng: markers [i] ['lng'] },
-    map: map
-    icon:  fehMarker
+	/** 
+	* Loop through all markers
+	*/
+	for (let i = 0; i < markers.length; i++) 
+	{
 
-  });
+		/** 
+		* Create new markers
+		*/
+		const marker = new google.maps.Marker({
+			position: { lat: markers[i]['lat'], lng: markers[i]['lng'] },
+			map: map,
+			icon: fehMarker,
+			// animation: google.maps.Animation.DROP
+		});
 
-  function createInfoWindows() {
-    const infoWindowContent = `
-    <div class= " feh-content">
-    <h3>${markers[i] ['locationName']}</h3>
-    <address><p>${markers [i] ['adress']}</p>
-    </address>
-    </div>`;
+		/** 
+		* Function that will create new info windows with info from markers array/objects
+		* and click events to open them
+		*/
+		function createInfoWindows() 
+		{
+			const infoWindowContent = `
+				<div class="feh-content">
+					<h3>${markers[i]['locationName']}</h3>
+					<address>
+						<p>${markers[i]['address']}</p>
+					</address>
+				<div>
+			`;
 
-    google.maps.event.addListener(marker, 'click', function() {
-        infoWindow.setContent(infoWindowContent);
-        infoWindow.open(map, marker);
-    });
+			google.maps.event.addListener(marker, "click", function ()
+			{
+				infoWindow.setContent(infoWindowContent);
+				infoWindow.open(map, marker);
+			}); 
+		}
+		createInfoWindows();
 
-    
-  }
+		/** 
+		* Recenter map when an info window is closed
+		*/
+		infoWindow.addListener('closeclick', function() {
+			map.fitBounds(bounds);
+		});
 
-  createInfoWindows();
-
-  infoWindow.addListener('closeclick' , function() {
-    map.fitBounds(bounds);
-
-  });
-
-
-  bounds.extend(new google.maps.LatLng(markers[i]['lat'], markers[i] ['lng']));
-    map.fitBounds(bounds);
-}
+		/** 
+		* Fit all of our markers on the map, neatly
+		*/
+		bounds.extend(new google.maps.LatLng(markers[i]['lat'], markers[i]['lng']));		
+		map.fitBounds(bounds); 
+   }	
 
 }
