@@ -2,38 +2,33 @@
   <head>
     <meta charset="UTF-8" />
     <title>Custom Google Map With Icons</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
     <style>
-      * {
-        padding: 0;
-        margin: 0;
-      }
-      html,
-      body {
-        height: 100%;
-      }
-      body {
-        display: flex;
-      }
-      #google-map {
-        border: 1px solid #ccc;
-        width: 700px;
-        height: 500px;
-        align-self: center;
-        margin: 0 auto;
-      }
+   * { padding: 0; margin: 0; }
+		html, body { height: 100%; }
+		body { display: flex; }
 
-      .feh-content * {
-        font-family: "uniform", sans-serif;
-      }
-
-      .feh-content h3 {
-        font-weight: 400;
-        margin-bottom: 10px;
-        line-height: 18px;
-      }
+		#google-map {
+			margin: 0 auto 0 auto;
+			border: 1px solid #ccc;
+			width: 700px;
+			height: 500px;
+			align-self: center;
+		}
+		.feh-content * {
+			font-family: 'uniform';
+		}
+		.feh-content h3 {
+			font-weight: 500;
+			margin-bottom: 10px;
+		}
+		.feh-content p {
+			font-style: normal;
+			line-height: 16px;
+			font-weight: 400;
+		}
     </style>
   </head>
 
@@ -47,5 +42,5 @@
     defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCoFr7CPGCBLbXwbeBux_tup0_pNWSJshQ&callback=initMap"
   ></script>
-  <script src="main.js"></script>
+  <script dfer src="main.js"></script>
 </html>
